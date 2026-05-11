@@ -1,0 +1,22 @@
+#!/bin/sh
+# Wrapper around the real Chromium crashpad handler.
+#
+# Chromium 148 on Debian bookworm omits --database when spawning the handler
+# because DIR_USER_DATA is not yet resolved during PreSandboxStartup. The real
+# handler exits immediately with "--database is required", which causes Chromium
+# to receive SIGTRAP and crash. Inject a fallback path when the flag is absent.
+#
+# Use $$ (PID of this wrapper invocation) for a unique per-session database
+# directory so concurrent sessions do not share the same crashpad database.
+db=""
+for a in "$@"; do
+  case "$a" in --database=*) db=1 ;; esac
+done
+
+if [ -z "$db" ]; then
+  mkdir -p "/tmp/chromium-crashpad-$$"
+  exec /usr/lib/chromium/chrome_crashpad_handler.real \
+    "--database=/tmp/chromium-crashpad-$$" "$@"
+fi
+
+exec /usr/lib/chromium/chrome_crashpad_handler.real "$@"

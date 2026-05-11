@@ -1,0 +1,24 @@
+{
+  "DownloadRestrictions": 3,
+  "PrintingEnabled": false,
+  "DeveloperToolsAvailability": 2,
+  "ExtensionInstallBlocklist": ["*"],
+  "AllowFileSelectionDialogs": false,
+  "URLBlocklist": [
+    "chrome://*",
+    "file://*"
+  ],
+  "BookmarkBarEnabled": false,
+  "PasswordManagerEnabled": false,
+  "BrowserSignin": 0,
+  "TranslateEnabled": false,
+  "DefaultBrowserSettingEnabled": false,
+  "AutofillAddressEnabled": false,
+  "AutofillCreditCardEnabled": false,
+  "DefaultNotificationsSetting": 2,
+  "SearchSuggestEnabled": false,
+  "AudioCaptureAllowed": false,
+  "VideoCaptureAllowed": false,
+  "ScreenCaptureAllowed": false,
+  "ExternalProtocolDialogShowAlwaysOpenCheckbox": false
+}

@@ -1,0 +1,35 @@
+# Grype vulnerability scan configuration.
+# Applied automatically by anchore/scan-action and local grype runs.
+# Format: https://github.com/anchore/grype#specifying-matches-to-ignore
+
+# ── Fix availability ──────────────────────────────────────────────────────────
+# Ignore vulnerabilities that have no upstream fix.
+# These are reported in the GitHub Security tab via SARIF but should not block
+# CI — a Debian base package with a wont-fix CVE is out of our control.
+ignore:
+  - fix-state: not-fixed
+  - fix-state: wont-fix
+  - fix-state: unknown
+
+# ── EPSS (Exploit Prediction Scoring System) ──────────────────────────────────
+# EPSS predicts the probability of active exploitation in the next 30 days.
+# Use it alongside CVSS to avoid acting on theoretically-high but practically-
+# unexploited vulnerabilities.
+#
+# Grype 0.74+ fetches EPSS scores automatically. To ignore findings below a
+# threshold, add entries like:
+#
+#   - epss-score: "< 0.001"   # ignore if exploitation probability < 0.1 %
+#
+# Or to ignore a specific CVE that is high-CVSS but very low EPSS:
+#
+#   - vulnerability: CVE-XXXX-YYYY
+#     reason: "CVSS 9.8, EPSS < 0.01 %, no public exploit, no fix available"
+
+# ── Per-CVE exceptions ────────────────────────────────────────────────────────
+# Add entries here when a specific CVE is accepted after review.
+# Always include a reason.
+#
+# Example:
+#   - vulnerability: CVE-2024-12345
+#     reason: "No fix available; mitigated by container network isolation"

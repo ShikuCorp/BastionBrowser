@@ -1,0 +1,25 @@
+#!/bin/sh
+# Wrapper: runs hadolint via Docker so no local install is needed.
+# The VS Code hadolint extension calls this as: hadolint [options] <Dockerfile>
+# We mount the file's parent directory into the container so hadolint can read it.
+
+file=""
+opts=""
+for a in "$@"; do
+  case "$a" in
+    -*) opts="$opts $a" ;;
+    *)  file="$a" ;;
+  esac
+done
+
+if [ -n "$file" ] && [ -f "$file" ]; then
+  dir=$(cd "$(dirname "$file")" && pwd)
+  base=$(basename "$file")
+  # shellcheck disable=SC2086
+  exec docker run --rm \
+    -v "$dir:/work:ro" \
+    hadolint/hadolint \
+    hadolint $opts "/work/$base"
+else
+  exec docker run --rm -i hadolint/hadolint hadolint "$@"
+fi

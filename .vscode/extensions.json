@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    // Dockerfile linting via hadolint
+    "exiasr.hadolint",
+    // Shell script linting via shellcheck
+    "timonwong.shellcheck"
+  ]
+}

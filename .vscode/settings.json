@@ -1,0 +1,49 @@
+{
+  // ── Hadolint (Dockerfile linter) ─────────────────────────────────────────
+  // Uses a Docker wrapper (.vscode/bin/hadolint) — no local install needed.
+  "hadolint.hadolintPath": "${workspaceFolder}/.vscode/bin/hadolint",
+  // Ignore DL3008 (pin apt versions) — acceptable in a kiosk image where we
+  // always want the latest available package at build time.
+  "hadolint.ignore": ["DL3008"],
+
+  // ── ShellCheck ───────────────────────────────────────────────────────────
+  // Install locally: sudo apt install shellcheck
+  // The extension also supports useBuiltinBinaries if apt is unavailable.
+  "shellcheck.executablePath": "shellcheck",
+  "shellcheck.useBuiltinBinaries": false,
+  // entry.sh and kiosk.sh are bash scripts; help shellcheck infer the shell
+  // even if the shebang is just #!/bin/bash.
+  "shellcheck.run": "onSave",
+  // SC1091: don't require sourced files to exist on the linting machine.
+  // SC2034: unused variables (intentional in some trap / export patterns).
+  "shellcheck.exclude": ["SC1091", "SC2034"],
+
+  // ── File associations ─────────────────────────────────────────────────────
+  "files.associations": {
+    "Dockerfile": "dockerfile",
+    "*.sh": "shellscript",
+    // chrome_crashpad_handler has no extension but is a shell script
+    "scripts/chrome_crashpad_handler": "shellscript"
+  },
+
+  // ── Editor: trim whitespace and insert final newline for all files ────────
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+
+  // ── JSON: compact arrays in policy files ─────────────────────────────────
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+
+  // ── Shell scripts: 2-space indent, no tab ────────────────────────────────
+  "[shellscript]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": false
+  },
+
+  // ── Dockerfile ────────────────────────────────────────────────────────────
+  "[dockerfile]": {
+    "editor.formatOnSave": false
+  }
+}
